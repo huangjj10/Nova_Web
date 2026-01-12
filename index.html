@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Career Planner - Your Future Awaits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        .glow-animation {
+            animation: glow 3s ease-in-out infinite;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Modal and Loading Animations */
+        .modal-backdrop {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .spin-animation {
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Floating Button */
+        .floating-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-gray-900/80 backdrop-blur-md z-50 border-b border-purple-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold gradient-text">✨ Nova Career Planner</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#hero" class="text-gray-300 hover:text-purple-400 transition">Home</a>
+                    <a href="#industries" class="text-gray-300 hover:text-purple-400 transition">Industries</a>
+                    <a href="#about" class="text-gray-300 hover:text-purple-400 transition">About</a>
+                    <a href="#contact" class="text-gray-300 hover:text-purple-400 transition">Contact</a>
+                </div>
+                <button class="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-2 rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Nova Persona -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 glow-animation"></div>
+            <div class="absolute top-40 right-10 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 glow-animation" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-20 left-1/2 w-80 h-80 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 glow-animation" style="animation-delay: 2s;"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="float-animation">
+                <div class="inline-block mb-8">
+                    <div class="w-32 h-32 mx-auto bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 rounded-full flex items-center justify-center shadow-2xl">
+                        <span class="text-6xl">🚀</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                Welcome to <span class="gradient-text">Nova Persona</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Chart your path through the future of careers. Explore cutting-edge industries and discover where your passion meets tomorrow's opportunities.
+            </p>
+            
+            <!-- Search Input -->
+            <div class="max-w-2xl mx-auto mb-8">
+                <div class="flex flex-col sm:flex-row gap-3 items-center">
+                    <input 
+                        type="text" 
+                        id="majorInput" 
+                        placeholder="Enter your major (e.g., Civil Engineering, Design, Computer Science...)" 
+                        class="flex-1 w-full px-6 py-4 rounded-full bg-gray-800/50 border-2 border-purple-500/30 focus:border-purple-500 focus:outline-none text-white placeholder-gray-400 backdrop-blur-sm"
+                    />
+                    <button 
+                        onclick="exploreFuture()" 
+                        class="bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-full text-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition shadow-lg hover:shadow-purple-500/50 whitespace-nowrap"
+                    >
+                        Explore Your Future
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex justify-center items-center">
+                <button class="border-2 border-purple-500 px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-500/10 transition">
+                    Learn More
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-8 mt-16 max-w-3xl mx-auto">
+                <div class="text-center">
+                    <div class="text-4xl font-bold gradient-text">500K+</div>
+                    <div class="text-gray-400 mt-2">Career Paths</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold gradient-text">100+</div>
+                    <div class="text-gray-400 mt-2">Industries</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold gradient-text">98%</div>
+                    <div class="text-gray-400 mt-2">Success Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <div class="w-6 h-10 border-2 border-purple-500 rounded-full flex justify-center pt-2">
+                <div class="w-1 h-3 bg-purple-500 rounded-full animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Industries Section -->
+    <section id="industries" class="py-20 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Future <span class="gradient-text">Industries</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Step into tomorrow's most revolutionary sectors and shape the future of humanity
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- AI Card -->
+                <div class="card-hover bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-purple-500/30 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-purple-600/20 rounded-full filter blur-3xl"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6 shadow-lg">
+                            <span class="text-3xl">🤖</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 gradient-text">Artificial Intelligence</h3>
+                        <p class="text-gray-400 mb-6">
+                            Design intelligent systems that think, learn, and adapt. From machine learning to neural networks, lead the AI revolution.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-purple-500 mr-2">✓</span>
+                                Machine Learning Engineer
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-purple-500 mr-2">✓</span>
+                                AI Research Scientist
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-purple-500 mr-2">✓</span>
+                                Data Science Specialist
+                            </li>
+                        </ul>
+                        <button class="w-full bg-purple-600 hover:bg-purple-700 py-3 rounded-lg font-semibold transition">
+                            Explore AI Careers
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bionics Card -->
+                <div class="card-hover bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-pink-500/30 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-pink-600/20 rounded-full filter blur-3xl"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-red-500 rounded-xl flex items-center justify-center mb-6 shadow-lg">
+                            <span class="text-3xl">🧬</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 gradient-text">Bionics</h3>
+                        <p class="text-gray-400 mb-6">
+                            Merge biology with technology to enhance human capabilities. Create groundbreaking solutions in bioengineering.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-pink-500 mr-2">✓</span>
+                                Biomedical Engineer
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-pink-500 mr-2">✓</span>
+                                Prosthetics Designer
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-pink-500 mr-2">✓</span>
+                                Neurotechnology Expert
+                            </li>
+                        </ul>
+                        <button class="w-full bg-pink-600 hover:bg-pink-700 py-3 rounded-lg font-semibold transition">
+                            Explore Bionics Careers
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Robotics Card -->
+                <div class="card-hover bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-blue-500/30 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-blue-600/20 rounded-full filter blur-3xl"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-6 shadow-lg">
+                            <span class="text-3xl">⚙️</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 gradient-text">Robotics</h3>
+                        <p class="text-gray-400 mb-6">
+                            Build autonomous machines that transform industries. From manufacturing to exploration, power the robotic age.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-blue-500 mr-2">✓</span>
+                                Robotics Engineer
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-blue-500 mr-2">✓</span>
+                                Automation Specialist
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <span class="text-blue-500 mr-2">✓</span>
+                                Mechatronics Developer
+                            </li>
+                        </ul>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-semibold transition">
+                            Explore Robotics Careers
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+        <div class="glassmorphism rounded-3xl p-12 max-w-md mx-4 text-center fade-in">
+            <div class="w-24 h-24 mx-auto mb-6 relative">
+                <div class="absolute inset-0 border-4 border-purple-500 border-t-transparent rounded-full spin-animation"></div>
+                <div class="absolute inset-3 border-4 border-pink-500 border-t-transparent rounded-full spin-animation" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+            </div>
+            <p id="loadingText" class="text-xl font-semibold text-white mb-2">Analyzing industry trends...</p>
+            <p class="text-gray-400">Please wait while Nova processes your path</p>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="resultModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+        <div class="glassmorphism rounded-3xl p-8 max-w-2xl mx-4 fade-in relative">
+            <!-- Close Button -->
+            <button onclick="closeResultModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <!-- Icon -->
+            <div class="flex justify-center mb-6">
+                <div id="resultIcon" class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-4xl pulse-animation">
+                    🎯
+                </div>
+            </div>
+
+            <!-- Target Field -->
+            <h2 class="text-3xl font-bold text-center mb-2">
+                <span class="gradient-text" id="targetField">Smart Infrastructure & Robotics</span>
+            </h2>
+            <p class="text-center text-gray-400 mb-8">Your Future Career Path</p>
+
+            <!-- Key Skills -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 flex items-center">
+                    <span class="text-2xl mr-2">🔑</span>
+                    Key Cross-Disciplinary Skills
+                </h3>
+                <div class="space-y-3" id="keySkills">
+                    <!-- Skills will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Nova Advice -->
+            <div class="glassmorphism rounded-2xl p-6 border-2 border-purple-500/30">
+                <h3 class="text-lg font-semibold mb-3 flex items-center">
+                    <span class="text-2xl mr-2">💡</span>
+                    Nova's Golden Rule
+                </h3>
+                <p id="novaAdvice" class="text-gray-300 italic leading-relaxed">
+                    "Master the fundamentals, but always keep your eyes on emerging technologies."
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-4 mt-8">
+                <button onclick="closeResultModal()" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 py-3 rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition">
+                    Start Learning
+                </button>
+                <button onclick="closeResultModal()" class="flex-1 border-2 border-purple-500 py-3 rounded-full font-semibold hover:bg-purple-500/10 transition">
+                    Explore More
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button (Hidden - Coze SDK provides its own chat button) -->
+    <!-- 
+    <button onclick="openCozeBot()" class="floating-button pulse-animation">
+        <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-full p-4 shadow-2xl hover:shadow-purple-500/50 transition flex items-center gap-3 group">
+            <span class="text-2xl">💬</span>
+            <span class="font-semibold hidden group-hover:inline-block pr-2 whitespace-nowrap">Talk to Nova Expert</span>
+        </div>
+    </button>
+    -->
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 border-t border-purple-500/20 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-xl font-bold gradient-text mb-4">Nova Career Planner</h4>
+                    <p class="text-gray-400">Shaping the future, one career at a time.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Industries</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-purple-400 transition">Artificial Intelligence</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Bionics</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Robotics</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Resources</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-purple-400 transition">Career Guide</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Learning Paths</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Company</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-purple-400 transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Contact</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+                <p>&copy; 2026 Nova Career Planner. All rights reserved. Built for the future.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Career path database
+        const careerPaths = {
+            infrastructure: {
+                field: "Smart Infrastructure & Robotics",
+                icon: "🏗️",
+                skills: [
+                    { name: "IoT Sensors & Data Analytics", description: "Monitor infrastructure in real-time" },
+                    { name: "Autonomous Construction Robotics", description: "Build smarter with AI-powered machines" },
+                    { name: "Sustainable Materials Engineering", description: "Create eco-friendly future cities" }
+                ],
+                advice: "Bridge the gap between traditional civil engineering and cutting-edge automation—the future cities need architects who code."
+            },
+            design: {
+                field: "Embodied AI & Human-Machine Interaction",
+                icon: "🎨",
+                skills: [
+                    { name: "UX/UI for AI Systems", description: "Design intuitive AI interfaces" },
+                    { name: "Virtual/Augmented Reality Design", description: "Create immersive digital experiences" },
+                    { name: "Emotion Recognition & Interaction Design", description: "Make machines understand humans" }
+                ],
+                advice: "Great designers don't just make things beautiful—they make AI feel human, bridging creativity and technology seamlessly."
+            },
+            general: {
+                field: "General Future Tech Innovation",
+                icon: "🚀",
+                skills: [
+                    { name: "Cross-Domain Problem Solving", description: "Apply knowledge across multiple fields" },
+                    { name: "Rapid Technology Adaptation", description: "Stay ahead of emerging trends" },
+                    { name: "Interdisciplinary Collaboration", description: "Work with diverse expert teams" }
+                ],
+                advice: "In the age of convergence, versatility is your superpower—master the art of connecting dots across disciplines."
+            }
+        };
+
+        // Loading messages
+        const loadingMessages = [
+            "Analyzing industry trends...",
+            "Nova is mapping your path...",
+            "Consulting future job markets...",
+            "Identifying key opportunities..."
+        ];
+
+        let loadingMessageIndex = 0;
+        let loadingInterval;
+
+        // Main exploration function
+        function exploreFuture() {
+            const input = document.getElementById('majorInput').value.trim().toLowerCase();
+            
+            if (!input) {
+                alert('Please enter your major or field of interest!');
+                return;
+            }
+
+            // Show loading modal
+            showLoadingModal();
+
+            // Simulate AI processing with loading animation
+            setTimeout(() => {
+                const pathData = determineCareerPath(input);
+                hideLoadingModal();
+                showResultModal(pathData);
+            }, 3000);
+        }
+
+        // Determine career path based on input
+        function determineCareerPath(input) {
+            // Check for water/civil engineering
+            if (input.includes('水利') || input.includes('civil') || input.includes('水电') || 
+                input.includes('infrastructure') || input.includes('construction')) {
+                return careerPaths.infrastructure;
+            }
+            // Check for design/art
+            else if (input.includes('设计') || input.includes('design') || input.includes('art') || 
+                     input.includes('艺术') || input.includes('美术') || input.includes('创意')) {
+                return careerPaths.design;
+            }
+            // Default to general tech
+            else {
+                return careerPaths.general;
+            }
+        }
+
+        // Show loading modal with animated text
+        function showLoadingModal() {
+            const modal = document.getElementById('loadingModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            loadingMessageIndex = 0;
+            updateLoadingText();
+            
+            loadingInterval = setInterval(() => {
+                loadingMessageIndex = (loadingMessageIndex + 1) % loadingMessages.length;
+                updateLoadingText();
+            }, 800);
+        }
+
+        // Update loading text
+        function updateLoadingText() {
+            document.getElementById('loadingText').textContent = loadingMessages[loadingMessageIndex];
+        }
+
+        // Hide loading modal
+        function hideLoadingModal() {
+            clearInterval(loadingInterval);
+            const modal = document.getElementById('loadingModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Show result modal with career path data
+        function showResultModal(pathData) {
+            // Update icon
+            document.getElementById('resultIcon').innerHTML = pathData.icon;
+            
+            // Update target field
+            document.getElementById('targetField').textContent = pathData.field;
+            
+            // Update key skills
+            const skillsContainer = document.getElementById('keySkills');
+            skillsContainer.innerHTML = '';
+            pathData.skills.forEach((skill, index) => {
+                const skillDiv = document.createElement('div');
+                skillDiv.className = 'glassmorphism rounded-xl p-4 hover:border-purple-500/50 transition border border-transparent';
+                skillDiv.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">${['💻', '🔧', '🌟'][index]}</span>
+                        <div>
+                            <h4 class="font-semibold text-white mb-1">${skill.name}</h4>
+                            <p class="text-sm text-gray-400">${skill.description}</p>
+                        </div>
+                    </div>
+                `;
+                skillsContainer.appendChild(skillDiv);
+            });
+            
+            // Update Nova advice
+            document.getElementById('novaAdvice').textContent = `"${pathData.advice}"`;
+            
+            // Show modal
+            const modal = document.getElementById('resultModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Close result modal
+        function closeResultModal() {
+            const modal = document.getElementById('resultModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Coze Bot instance
+        let cozeChatClient;
+
+        // Open Coze Bot
+        function openCozeBot() {
+            // The Coze SDK will automatically create a floating chat button
+            // This function can be used to programmatically open the chat window
+            if (cozeChatClient) {
+                // You can add custom logic here if needed
+                console.log('Opening Coze chat...');
+            }
+        }
+
+        // Allow Enter key to trigger search
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('majorInput');
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    exploreFuture();
+                }
+            });
+        });
+    </script>
+
+    <!-- Coze Chat SDK Integration -->
+    <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
+    <script>
+      // Coze Chat SDK with Personal Access Token
+      new CozeWebSDK.WebChatClient({
+        config: {
+          bot_id: '7592519824132407349',
+        },
+        componentProps: {
+          title: 'Coze',
+        },
+        auth: {
+          type: 'token',
+          token: 'pat_TF7jKozV1q2wRs2KA5FAspAri9Dp1FKh2MCTRSLM72komBbn86C2Efmvjxa6HDUe',
+          onRefreshToken: function () {
+            return 'pat_TF7jKozV1q2wRs2KA5FAspAri9Dp1FKh2MCTRSLM72komBbn86C2Efmvjxa6HDUe'
+          }
+        }
+      });
+    </script>
+</body>
+</html>
